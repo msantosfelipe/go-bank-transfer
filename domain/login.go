@@ -1,3 +1,10 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2023 Felipe Maia Santos
+ *
+ */
+
 package domain
 
 // Login content struct deifinition
