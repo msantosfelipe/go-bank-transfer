@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# VS Code files
+.vscode/
+
+# db files
+db/data/
