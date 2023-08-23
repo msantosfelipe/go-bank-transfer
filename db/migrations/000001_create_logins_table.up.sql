@@ -1,0 +1,11 @@
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS logins(
+   cpf VARCHAR (11) PRIMARY KEY,
+   secret VARCHAR (1024) NOT NULL
+);
+
+INSERT INTO logins (cpf, secret) VALUES 
+('87832842067', '$2a$04$tV1m2v31qqr6Q6nIa4BIp.0jRN3PmymYvXy6Ysv1hc807nsyGQy3O');
+
+COMMIT;

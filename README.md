@@ -6,7 +6,7 @@ API for bank transfers from a digital bank
 ## Dependencies
 * Configuration
     - Install:
-        - Golang 1.20
+        - Golang 1.21
         - Docker - run local database
         - Migrate (https://github.com/golang-migrate/migrate) - run migrations in database
         - SQLC (https://sqlc.dev/) - convert sql queries into golang code
