@@ -3,7 +3,13 @@ DB_USER = master
 DB_PASS = greenbeans
 DB_NAME = bank-transfer
 
-.PHONY: db-up db-down db-create db-drop db-migrate
+.PHONY: swagger db-up db-down db-create db-drop db-migrate
+
+tests:
+	go test ./app/...
+
+swagger:
+	swag init -o infrastructure/swagger
 
 # Database commands
 db-up:
@@ -17,3 +23,11 @@ db-create:
 
 db-drop:
 	docker exec -it $(DB_CONTAINER) dropdb --username=master $(DB_NAME)
+
+# 'Migrate' required, see README
+db-migrate:
+	migrate -source file://db/migrations -database postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable up
+
+# 'Sqlc' required, see README
+db-queries:
+	sqlc generate
