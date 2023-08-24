@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -57,15 +58,30 @@ func (uc *accountUsecase) GetAccounts() (*domain.AccountList, error) {
 		return nil, err
 	}
 
-	// just for debug logging and use the secret value
+	// just for debug logging and use the secret and balance values
 	for _, i := range accounts {
 		level := logrus.GetLevel()
 		logrus.SetLevel(logrus.DebugLevel)
-		logrus.Debug(fmt.Sprintf("cpf: %s, secret: %s", i.Cpf, i.Secret))
+		logrus.Debug(fmt.Sprintf("cpf: %s, secret: %s, balance: %v", i.Cpf, i.Secret, i.Balance))
 		logrus.SetLevel(level)
 	}
 
 	return &domain.AccountList{Accounts: accounts}, nil
+}
+
+func (uc *accountUsecase) GetAccountBalance(accountId string) (*domain.AccountBalance, error) {
+	parsedUUID, err := uuid.Parse(accountId)
+	if err != nil {
+		logrus.Error("error parsing uuid - ", err)
+		return nil, err
+	}
+
+	balance, err := uc.repository.GetAccountBalance(parsedUUID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.AccountBalance{Balance: balance}, nil
 }
 
 func isValidCpf(cpf string) bool {

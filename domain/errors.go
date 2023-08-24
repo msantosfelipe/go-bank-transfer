@@ -10,6 +10,8 @@ package domain
 import (
 	"errors"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -17,6 +19,7 @@ var (
 	ErrAccountInvalidCpf = errors.New("invalid cpf")
 	// ErrAccountConflict will throw if the current account already exists
 	ErrAccountConflict = errors.New("already exists an account for this cpf")
+	ErrBadParamInput   = errors.New("given param is not valid")
 )
 
 // ResponseError struct definition
@@ -38,9 +41,13 @@ func GetErrorStatusCode(err error) int {
 		return http.StatusOK
 	}
 
+	if uuid.IsInvalidLengthError(err) {
+		return http.StatusBadRequest
+	}
+
 	switch err {
 	case ErrAccountInvalidCpf:
-		return http.StatusPreconditionFailed
+		return http.StatusBadRequest
 	case ErrAccountConflict:
 		return http.StatusConflict
 	default:

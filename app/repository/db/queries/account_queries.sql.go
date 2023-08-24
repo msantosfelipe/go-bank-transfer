@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgtype"
 )
 
 const countAccountByCpf = `-- name: CountAccountByCpf :one
@@ -45,6 +44,19 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (u
 	return id, err
 }
 
+const getAccountBalance = `-- name: GetAccountBalance :one
+SELECT a.balance
+FROM accounts a
+WHERE a.id = $1
+`
+
+func (q *Queries) GetAccountBalance(ctx context.Context, id uuid.UUID) (int64, error) {
+	row := q.db.QueryRow(ctx, getAccountBalance, id)
+	var balance int64
+	err := row.Scan(&balance)
+	return balance, err
+}
+
 const getAccounts = `-- name: GetAccounts :many
 SELECT a.id, a.name, a.cpf, a.balance, a.created_at, l.secret
 FROM accounts a
@@ -55,7 +67,7 @@ type GetAccountsRow struct {
 	ID        uuid.UUID
 	Name      string
 	Cpf       string
-	Balance   pgtype.Numeric
+	Balance   int64
 	CreatedAt time.Time
 	Secret    string
 }
