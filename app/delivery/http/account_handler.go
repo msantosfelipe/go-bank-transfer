@@ -33,11 +33,20 @@ func NewAccountRouter(router *gin.RouterGroup, accountUs domain.AccountUsecase) 
 }
 
 func (handler *accountHandler) createAccount(context *gin.Context) {
-	var body domain.Account
+	var body domain.AccountCreatorRequest
 	if err := context.BindJSON(&body); err != nil {
 		context.AbortWithStatusJSON(http.StatusPreconditionFailed, domain.BuildResponseFromError(err))
 		return
 	}
 
-	context.Status(http.StatusOK)
+	response, err := handler.accountUs.CreateAccount(body)
+	if err != nil {
+		context.AbortWithStatusJSON(
+			domain.GetErrorStatusCode(err),
+			domain.BuildResponseFromError(err),
+		)
+		return
+	}
+
+	context.SecureJSON(http.StatusOK, response)
 }

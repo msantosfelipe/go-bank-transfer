@@ -16,6 +16,7 @@ import (
 
 type Environment struct {
 	ApiPort string `env:"API_PORT"`
+	DbUri   string `env:"DB_URI"`
 }
 
 // ENV - output variable

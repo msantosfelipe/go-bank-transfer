@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	// ErrConflict will throw if the current record already exists
-	ErrConflict = errors.New("your item already exist")
+	// ErrAccountConflict will throw if the current account already exists
+	ErrAccountConflict = errors.New("already exists an account for this cpf")
 )
 
 // ResponseError struct definition
@@ -37,7 +37,7 @@ func GetErrorStatusCode(err error) int {
 	}
 
 	switch err {
-	case ErrConflict:
+	case ErrAccountConflict:
 		return http.StatusConflict
 	default:
 		return http.StatusInternalServerError

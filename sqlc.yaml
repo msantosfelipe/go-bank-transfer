@@ -1,0 +1,8 @@
+version: 1
+packages:
+  - path: "app/repository/db/queries"
+    name: "queries"
+    engine: "postgresql"
+    sql_package: "pgx/v4"
+    schema: "db/migrations"
+    queries: "db/queries"

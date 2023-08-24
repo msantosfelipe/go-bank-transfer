@@ -18,5 +18,10 @@ db-create:
 db-drop:
 	docker exec -it $(DB_CONTAINER) dropdb --username=master $(DB_NAME)
 
+# 'Migrate' required, see README
 db-migrate:
 	migrate -source file://db/migrations -database postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable up
+
+# 'Sqlc' required, see README
+db-queries:
+	sqlc generate
