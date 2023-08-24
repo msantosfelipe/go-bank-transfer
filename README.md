@@ -3,23 +3,23 @@
 ## Description
 API for bank transfers from a digital bank
 
-## Dependencies
-* Install:
-    - Golang 1.21
-    - Docker - if you want to run local database
-    - Migrate (https://github.com/golang-migrate/migrate) - if you want to run migrations in database
-    - SQLC (https://sqlc.dev/) - if you want to convert sql queries into golang code
-    - Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files
+## Requirements
+- Golang 1.21
+- Docker - if you want to run local database
+- Migrate (https://github.com/golang-migrate/migrate) - if you want to run migrations in database
+- SQLC (https://sqlc.dev/) - if you want to convert sql queries into golang code
+- Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files
 
-* Golang libraries:
-    - Web: `gin`
-    - DB - Postgres driver: `pgx`
-    - Log: `logrus`
-    - Env variables: `go-env` and `gotenv`
-    - More on `go.mod`
+## Dependencies
+- Web: `gin`
+- DB - Postgres driver: `pgx`
+- Log: `logrus`
+- Env variables: `go-env` and `gotenv`
+- More on `go.mod`
 
 ## How to run
-Documentation (Swagger) - http://localhost:8081/go-bank-transfer/swagger/index.html
+- Run tests - `make tests`
+- Documentation (Swagger) - http://localhost:8081/go-bank-transfer/swagger/index.html
 
 ## Features
 - Accounts

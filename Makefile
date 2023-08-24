@@ -5,6 +5,9 @@ DB_NAME = bank-transfer
 
 .PHONY: swagger db-up db-down db-create db-drop db-migrate
 
+tests:
+	go test ./app/...
+
 swagger:
 	swag init -o infrastructure/swagger
 
