@@ -17,7 +17,12 @@ import (
 	"github.com/msantosfelipe/go-bank-transfer/app/repository/db"
 	"github.com/msantosfelipe/go-bank-transfer/app/usecase"
 	"github.com/msantosfelipe/go-bank-transfer/config"
+	docs "github.com/msantosfelipe/go-bank-transfer/infrastructure/swagger"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+const basePath = "/go-bank-transfer"
 
 func main() {
 	// init db
@@ -34,7 +39,9 @@ func main() {
 
 	// init routers
 	engine := gin.New()
-	apiRouter := engine.Group("/go-bank-transfer")
+	apiRouter := engine.Group(basePath)
+	docs.SwaggerInfo.BasePath = basePath
+	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	http.NewAccountRouter(apiRouter, accountUs)
 
 	// serve

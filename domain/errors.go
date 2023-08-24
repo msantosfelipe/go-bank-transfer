@@ -13,6 +13,8 @@ import (
 )
 
 var (
+	// ErrAccountConflict will throw if the cpf is invalid
+	ErrAccountInvalidCpf = errors.New("invalid cpf")
 	// ErrAccountConflict will throw if the current account already exists
 	ErrAccountConflict = errors.New("already exists an account for this cpf")
 )
@@ -37,6 +39,8 @@ func GetErrorStatusCode(err error) int {
 	}
 
 	switch err {
+	case ErrAccountInvalidCpf:
+		return http.StatusPreconditionFailed
 	case ErrAccountConflict:
 		return http.StatusConflict
 	default:

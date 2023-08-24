@@ -8,6 +8,8 @@
 package usecase
 
 import (
+	"regexp"
+
 	"github.com/msantosfelipe/go-bank-transfer/domain"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -24,6 +26,11 @@ func NewAccountUsecase(repository domain.AccountRepository) domain.AccountUsecas
 }
 
 func (uc *accountUsecase) CreateAccount(request domain.AccountCreatorRequest) (*domain.AccountCreatorResponse, error) {
+	if ok := isValidCpf(request.Cpf); !ok {
+		logrus.Error(domain.ErrAccountInvalidCpf.Error())
+		return nil, domain.ErrAccountInvalidCpf
+	}
+
 	count, err := uc.repository.CountAccountByCpf(request.Cpf)
 	if err != nil {
 		return nil, err
@@ -41,6 +48,11 @@ func (uc *accountUsecase) CreateAccount(request domain.AccountCreatorRequest) (*
 	}
 
 	return uc.repository.CreateAccount(request.Name, request.Cpf, hashedPassword)
+}
+
+func isValidCpf(cpf string) bool {
+	validPattern := regexp.MustCompile(`^\d{11}$`)
+	return validPattern.MatchString(cpf)
 }
 
 func hashPassword(password string) (string, error) {

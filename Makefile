@@ -3,7 +3,10 @@ DB_USER = master
 DB_PASS = greenbeans
 DB_NAME = bank-transfer
 
-.PHONY: db-up db-down db-create db-drop db-migrate
+.PHONY: swagger db-up db-down db-create db-drop db-migrate
+
+swagger:
+	swag init -o infrastructure/swagger
 
 # Database commands
 db-up:

@@ -32,6 +32,16 @@ func NewAccountRouter(router *gin.RouterGroup, accountUs domain.AccountUsecase) 
 	router.POST("/accounts", handler.createAccount)
 }
 
+// @BasePath /go-bank-transfer
+// @Summary Create Account
+// @Description Create new Account in case 'cpf' doesn't exists yet
+// @Tags Account
+// @Router /accounts [post]
+// @Schemes
+// @Param AccountRequest body domain.AccountCreatorRequest true "Account request"
+// @Accept json
+// @Produce json
+// @Success 200 {object} domain.AccountCreatorResponse
 func (handler *accountHandler) createAccount(context *gin.Context) {
 	var body domain.AccountCreatorRequest
 	if err := context.BindJSON(&body); err != nil {
