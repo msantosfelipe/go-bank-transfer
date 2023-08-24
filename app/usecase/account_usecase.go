@@ -92,6 +92,6 @@ func isValidCpf(cpf string) bool {
 func hashPassword(password string) (string, error) {
 	var passwordBytes = []byte(password)
 	hashedPasswordBytes, err := bcrypt.
-		GenerateFromPassword(passwordBytes, bcrypt.MinCost)
+		GenerateFromPassword(passwordBytes, bcrypt.DefaultCost)
 	return string(hashedPasswordBytes), err
 }

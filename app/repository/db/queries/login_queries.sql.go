@@ -26,3 +26,16 @@ func (q *Queries) CreateLogin(ctx context.Context, arg CreateLoginParams) (strin
 	err := row.Scan(&cpf)
 	return cpf, err
 }
+
+const getLogin = `-- name: GetLogin :one
+SELECT cpf, secret
+FROM logins l
+WHERE l.cpf = $1
+`
+
+func (q *Queries) GetLogin(ctx context.Context, cpf string) (Login, error) {
+	row := q.db.QueryRow(ctx, getLogin, cpf)
+	var i Login
+	err := row.Scan(&i.Cpf, &i.Secret)
+	return i, err
+}

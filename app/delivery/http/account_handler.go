@@ -47,7 +47,7 @@ func NewAccountRouter(router *gin.RouterGroup, accountUs domain.AccountUsecase) 
 func (handler *accountHandler) createAccount(context *gin.Context) {
 	var body domain.AccountCreatorRequest
 	if err := context.BindJSON(&body); err != nil {
-		context.AbortWithStatusJSON(http.StatusPreconditionFailed, domain.BuildResponseFromError(err))
+		context.AbortWithStatusJSON(http.StatusBadRequest, domain.BuildResponseFromError(err))
 		return
 	}
 
@@ -96,7 +96,7 @@ func (handler *accountHandler) GetAccounts(context *gin.Context) {
 func (handler *accountHandler) GetAccountBalance(context *gin.Context) {
 	accountId, exists := context.Params.Get("account_id")
 	if !exists {
-		context.AbortWithStatusJSON(http.StatusPreconditionFailed,
+		context.AbortWithStatusJSON(http.StatusBadRequest,
 			domain.BuildResponseFromError(domain.ErrBadParamInput))
 		return
 	}

@@ -13,9 +13,13 @@ type Login struct {
 	Secret string `json:"secret"`
 }
 
+type JwtToken struct {
+	Token string `json:"token"`
+}
+
 // Login usecase methods deifinition
 type LoginUsecase interface {
-	AuthenticateUser(login Login) error
+	AuthenticateUser(credentials Login) (*JwtToken, error)
 }
 
 // Login repository methods deifinition

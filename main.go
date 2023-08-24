@@ -36,6 +36,8 @@ func main() {
 	// init dependencies
 	accountRepo := db.NewAccountRepository(dbClient)
 	accountUs := usecase.NewAccountUsecase(accountRepo)
+	loginRepo := db.NewLoginRepository(dbClient)
+	loginUs := usecase.NewLoginUsecase(loginRepo)
 
 	// init routers
 	engine := gin.New()
@@ -43,8 +45,8 @@ func main() {
 	docs.SwaggerInfo.BasePath = basePath
 	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	http.NewAccountRouter(apiRouter, accountUs)
+	http.NewLoginRouter(apiRouter, loginUs)
 
 	// serve
 	engine.Run(":" + config.ENV.ApiPort)
-
 }
