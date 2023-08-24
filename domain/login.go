@@ -24,5 +24,5 @@ type LoginUsecase interface {
 
 // Login repository methods deifinition
 type LoginRepository interface {
-	GetLoginByCpf(cpf string) (*Login, error)
+	GetLoginAndAccount(cpf string) (*Login, string, error)
 }

@@ -7,6 +7,8 @@ package queries
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const createLogin = `-- name: CreateLogin :one
@@ -27,15 +29,22 @@ func (q *Queries) CreateLogin(ctx context.Context, arg CreateLoginParams) (strin
 	return cpf, err
 }
 
-const getLogin = `-- name: GetLogin :one
-SELECT cpf, secret
+const getLoginAndAccount = `-- name: GetLoginAndAccount :one
+SELECT l.cpf, l.secret, a.id 
 FROM logins l
+INNER JOIN accounts a ON a.cpf = l.cpf 
 WHERE l.cpf = $1
 `
 
-func (q *Queries) GetLogin(ctx context.Context, cpf string) (Login, error) {
-	row := q.db.QueryRow(ctx, getLogin, cpf)
-	var i Login
-	err := row.Scan(&i.Cpf, &i.Secret)
+type GetLoginAndAccountRow struct {
+	Cpf    string
+	Secret string
+	ID     uuid.UUID
+}
+
+func (q *Queries) GetLoginAndAccount(ctx context.Context, cpf string) (GetLoginAndAccountRow, error) {
+	row := q.db.QueryRow(ctx, getLoginAndAccount, cpf)
+	var i GetLoginAndAccountRow
+	err := row.Scan(&i.Cpf, &i.Secret, &i.ID)
 	return i, err
 }

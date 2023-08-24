@@ -200,3 +200,18 @@ func TestGetAccountBalance_InvalidUUID(t *testing.T) {
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
 }
+
+func TestGetAccountBalance_ErrorRetrievingBalanceFromDB(t *testing.T) {
+	mockRepo := new(mocks.MockAccountRepository)
+	usecase := NewAccountUsecase(mockRepo)
+
+	expectedErr := errors.New("error retrieving balance")
+
+	mockRepo.On("GetAccountBalance", mock.Anything).Return(float64(0), expectedErr)
+
+	response, err := usecase.GetAccountBalance(uuid.New().String())
+
+	assert.ErrorIs(t, err, expectedErr)
+	assert.Nil(t, response)
+	mockRepo.AssertExpectations(t)
+}

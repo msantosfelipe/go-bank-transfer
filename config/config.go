@@ -15,8 +15,10 @@ import (
 )
 
 type Environment struct {
-	ApiPort string `env:"API_PORT"`
-	DbUri   string `env:"DB_URI"`
+	ApiPort            string `env:"API_PORT"`
+	DbUri              string `env:"DB_URI"`
+	JwtTokenSecret     string `env:"JWT_TOKEN_SECRET"`
+	JwtTokenExpMinutes int    `env:"JWT_TOKEN_EXP_MINUTES"`
 }
 
 // ENV - output variable

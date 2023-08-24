@@ -24,20 +24,20 @@ func NewLoginRepository(dbClient *pgxpool.Pool) domain.LoginRepository {
 	return &loginRepository{dbClient: dbClient}
 }
 
-func (r *loginRepository) GetLoginByCpf(cpf string) (*domain.Login, error) {
+func (r *loginRepository) GetLoginAndAccount(cpf string) (*domain.Login, string, error) {
 	ctx := context.Background()
 	defer ctx.Done()
 
 	queries := queries.New(r.dbClient)
 
-	login, err := queries.GetLogin(ctx, cpf)
+	login, err := queries.GetLoginAndAccount(ctx, cpf)
 	if err != nil {
 		logrus.Error("error retrieving login - ", err)
-		return nil, err
+		return nil, "", err
 	}
 
 	return &domain.Login{
 		Cpf:    login.Cpf,
 		Secret: login.Secret,
-	}, nil
+	}, login.ID.String(), nil
 }
