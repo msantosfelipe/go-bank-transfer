@@ -22,9 +22,7 @@ type accountRepository struct {
 }
 
 func NewAccountRepository(dbClient *pgxpool.Pool) domain.AccountRepository {
-	return &accountRepository{
-		dbClient: dbClient,
-	}
+	return &accountRepository{dbClient: dbClient}
 }
 
 func (r *accountRepository) CreateAccount(name, cpf, hashedPassword string) (*domain.AccountCreatorResponse, error) {

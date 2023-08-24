@@ -14,6 +14,7 @@ API for bank transfers from a digital bank
 - Web: `gin`
 - DB - Postgres driver: `pgx`
 - Log: `logrus`
+- Hash: `bcrypt`
 - Env variables: `go-env` and `gotenv`
 - More on `go.mod`
 
@@ -29,7 +30,7 @@ API for bank transfers from a digital bank
 - Login
     - Authenticate a user - TODO
         - The default logins/secrets are:
-            - `87832842067` / `FirstString123@`
+            - `87832842067` / `LetsGo321@`
 - Transfer
     - Get authenticated user transfers - TODO
     - Make a transfer between accounts - TODO
