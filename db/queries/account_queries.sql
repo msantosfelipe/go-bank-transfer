@@ -7,3 +7,8 @@ WHERE a.cpf = $1;
 INSERT INTO accounts(id, name, cpf)
 VALUES ($1, $2, $3)
 RETURNING id;
+
+-- name: GetAccounts :many
+SELECT a.*, l.secret
+FROM accounts a
+INNER JOIN logins l ON a.cpf = l.cpf;

@@ -8,6 +8,7 @@
 package usecase
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/msantosfelipe/go-bank-transfer/domain"
@@ -48,6 +49,23 @@ func (uc *accountUsecase) CreateAccount(request domain.AccountCreatorRequest) (*
 	}
 
 	return uc.repository.CreateAccount(request.Name, request.Cpf, hashedPassword)
+}
+
+func (uc *accountUsecase) GetAccounts() (*domain.AccountList, error) {
+	accounts, err := uc.repository.GetAccounts()
+	if err != nil {
+		return nil, err
+	}
+
+	// just for debug logging and use the secret value
+	for _, i := range accounts {
+		level := logrus.GetLevel()
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.Debug(fmt.Sprintf("cpf: %s, secret: %s", i.Cpf, i.Secret))
+		logrus.SetLevel(level)
+	}
+
+	return &domain.AccountList{Accounts: accounts}, nil
 }
 
 func isValidCpf(cpf string) bool {

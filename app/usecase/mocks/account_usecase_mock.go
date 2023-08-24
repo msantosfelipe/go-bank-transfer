@@ -26,3 +26,8 @@ func (m *MockAccountRepository) CreateAccount(name, cpf, password string) (*doma
 	args := m.Called(name, cpf, password)
 	return args.Get(0).(*domain.AccountCreatorResponse), args.Error(1)
 }
+
+func (m *MockAccountRepository) GetAccounts() ([]domain.Account, error) {
+	args := m.Called()
+	return args.Get(0).([]domain.Account), args.Error(1)
+}

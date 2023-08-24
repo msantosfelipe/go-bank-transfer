@@ -7,8 +7,10 @@ package queries
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgtype"
 )
 
 const countAccountByCpf = `-- name: CountAccountByCpf :one
@@ -41,4 +43,46 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (u
 	var id uuid.UUID
 	err := row.Scan(&id)
 	return id, err
+}
+
+const getAccounts = `-- name: GetAccounts :many
+SELECT a.id, a.name, a.cpf, a.balance, a.created_at, l.secret
+FROM accounts a
+INNER JOIN logins l ON a.cpf = l.cpf
+`
+
+type GetAccountsRow struct {
+	ID        uuid.UUID
+	Name      string
+	Cpf       string
+	Balance   pgtype.Numeric
+	CreatedAt time.Time
+	Secret    string
+}
+
+func (q *Queries) GetAccounts(ctx context.Context) ([]GetAccountsRow, error) {
+	rows, err := q.db.Query(ctx, getAccounts)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetAccountsRow
+	for rows.Next() {
+		var i GetAccountsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Cpf,
+			&i.Balance,
+			&i.CreatedAt,
+			&i.Secret,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
