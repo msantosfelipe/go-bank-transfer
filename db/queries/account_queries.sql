@@ -12,3 +12,8 @@ RETURNING id;
 SELECT a.*, l.secret
 FROM accounts a
 INNER JOIN logins l ON a.cpf = l.cpf;
+
+-- name: GetAccountBalance :one
+SELECT a.balance
+FROM accounts a
+WHERE a.id = $1;

@@ -10,6 +10,11 @@ definitions:
       string:
         type: string
     type: object
+  domain.AccountBalance:
+    properties:
+      balance:
+        type: number
+    type: object
   domain.AccountCreatorRequest:
     properties:
       cpf:
@@ -45,7 +50,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.AccountList'
-      summary: Get Accounts
+      summary: Get accounts
       tags:
       - Account
     post:
@@ -62,11 +67,30 @@ paths:
       produces:
       - application/json
       responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.AccountCreatorResponse'
+      summary: Create account
+      tags:
+      - Account
+  /accounts/{account_id}/balance:
+    get:
+      description: Return account balance
+      parameters:
+      - description: Account ID
+        in: path
+        name: account_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.AccountCreatorResponse'
-      summary: Create Account
+            $ref: '#/definitions/domain.AccountBalance'
+      summary: Get account balance
       tags:
       - Account
 swagger: "2.0"

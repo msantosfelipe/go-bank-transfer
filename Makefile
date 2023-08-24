@@ -24,10 +24,10 @@ db-create:
 db-drop:
 	docker exec -it $(DB_CONTAINER) dropdb --username=master $(DB_NAME)
 
-# 'Migrate' required, see README
+# 'Migrate' required, see README - run migration over db to apply new changes
 db-migrate:
 	migrate -source file://db/migrations -database postgres://$(DB_USER):$(DB_PASS)@localhost:5432/$(DB_NAME)?sslmode=disable up
 
-# 'Sqlc' required, see README
+# 'Sqlc' required, see README - converts queries in .sql files to golang files
 db-queries:
 	sqlc generate

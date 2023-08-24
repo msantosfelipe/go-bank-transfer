@@ -100,14 +100,33 @@ func (r *accountRepository) GetAccounts() ([]domain.Account, error) {
 	var accounts []domain.Account
 	for _, i := range response {
 		accounts = append(accounts, domain.Account{
-			Id:     i.ID.String(),
-			Name:   i.Name,
-			Cpf:    i.Cpf,
-			Secret: i.Secret,
-			//Balance:   i.Balance,
+			Id:        i.ID.String(),
+			Name:      i.Name,
+			Cpf:       i.Cpf,
+			Secret:    i.Secret,
+			Balance:   microMoneytoMoney(i.Balance),
 			CreatedAt: i.CreatedAt,
 		})
 	}
 
 	return accounts, nil
+}
+
+func (r *accountRepository) GetAccountBalance(accountId uuid.UUID) (float64, error) {
+	ctx := context.Background()
+	defer ctx.Done()
+
+	queries := queries.New(r.dbClient)
+
+	microMoney, err := queries.GetAccountBalance(ctx, accountId)
+	if err != nil {
+		logrus.Error("error retrieving account balance - ", err)
+		return 0, err
+	}
+
+	return microMoneytoMoney(microMoney), nil
+}
+
+func microMoneytoMoney(microMoney int64) float64 {
+	return float64(microMoney) / 1000000.0
 }

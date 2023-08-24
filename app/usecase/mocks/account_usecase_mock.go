@@ -8,6 +8,7 @@
 package mocks
 
 import (
+	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
 	"github.com/stretchr/testify/mock"
 )
@@ -30,4 +31,9 @@ func (m *MockAccountRepository) CreateAccount(name, cpf, password string) (*doma
 func (m *MockAccountRepository) GetAccounts() ([]domain.Account, error) {
 	args := m.Called()
 	return args.Get(0).([]domain.Account), args.Error(1)
+}
+
+func (m *MockAccountRepository) GetAccountBalance(id uuid.UUID) (float64, error) {
+	args := m.Called()
+	return args.Get(0).(float64), args.Error(1)
 }

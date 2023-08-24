@@ -25,7 +25,7 @@ const docTemplate = `{
                 "tags": [
                     "Account"
                 ],
-                "summary": "Get Accounts",
+                "summary": "Get accounts",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -46,7 +46,7 @@ const docTemplate = `{
                 "tags": [
                     "Account"
                 ],
-                "summary": "Create Account",
+                "summary": "Create account",
                 "parameters": [
                     {
                         "description": "Account request",
@@ -59,10 +59,39 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.AccountCreatorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{account_id}/balance": {
+            "get": {
+                "description": "Return account balance",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get account balance",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.AccountCreatorResponse"
+                            "$ref": "#/definitions/domain.AccountBalance"
                         }
                     }
                 }
@@ -84,6 +113,14 @@ const docTemplate = `{
                 },
                 "string": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.AccountBalance": {
+            "type": "object",
+            "properties": {
+                "balance": {
+                    "type": "number"
                 }
             }
         },

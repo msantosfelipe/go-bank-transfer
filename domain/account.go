@@ -7,7 +7,11 @@
 
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 const DefaultBalance = 0
 
@@ -34,10 +38,15 @@ type AccountCreatorResponse struct {
 	Id string `json:"id"`
 }
 
+type AccountBalance struct {
+	Balance float64 `json:"balance"`
+}
+
 // Account usecase methods deifinition
 type AccountUsecase interface {
 	CreateAccount(request AccountCreatorRequest) (*AccountCreatorResponse, error)
 	GetAccounts() (*AccountList, error)
+	GetAccountBalance(accountId string) (*AccountBalance, error)
 }
 
 // Account repository methods deifinition
@@ -45,4 +54,5 @@ type AccountRepository interface {
 	CreateAccount(name, cpf, hashedPassword string) (*AccountCreatorResponse, error)
 	CountAccountByCpf(cpf string) (int64, error)
 	GetAccounts() ([]Account, error)
+	GetAccountBalance(accountId uuid.UUID) (float64, error)
 }

@@ -8,14 +8,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgtype"
 )
 
 type Account struct {
 	ID        uuid.UUID
 	Name      string
 	Cpf       string
-	Balance   pgtype.Numeric
+	Balance   int64
 	CreatedAt time.Time
 }
 
