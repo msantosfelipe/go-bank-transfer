@@ -1,4 +1,15 @@
 definitions:
+  domain.Account:
+    properties:
+      cpf:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: string
+      string:
+        type: string
+    type: object
   domain.AccountCreatorRequest:
     properties:
       cpf:
@@ -13,10 +24,30 @@ definitions:
       id:
         type: string
     type: object
+  domain.AccountList:
+    properties:
+      accounts:
+        items:
+          $ref: '#/definitions/domain.Account'
+        type: array
+    type: object
 info:
   contact: {}
 paths:
   /accounts:
+    get:
+      description: Return the list of all accounts. Fields 'secret' and 'balance'
+        are omitted
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AccountList'
+      summary: Get Accounts
+      tags:
+      - Account
     post:
       consumes:
       - application/json

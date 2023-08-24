@@ -30,6 +30,7 @@ func NewAccountRouter(router *gin.RouterGroup, accountUs domain.AccountUsecase) 
 	)
 
 	router.POST("/accounts", handler.createAccount)
+	router.GET("/accounts", handler.GetAccounts)
 }
 
 // @BasePath /go-bank-transfer
@@ -50,6 +51,27 @@ func (handler *accountHandler) createAccount(context *gin.Context) {
 	}
 
 	response, err := handler.accountUs.CreateAccount(body)
+	if err != nil {
+		context.AbortWithStatusJSON(
+			domain.GetErrorStatusCode(err),
+			domain.BuildResponseFromError(err),
+		)
+		return
+	}
+
+	context.SecureJSON(http.StatusCreated, response)
+}
+
+// @BasePath /go-bank-transfer
+// @Summary Get Accounts
+// @Description Return the list of all accounts. Fields 'secret' and 'balance' are omitted
+// @Tags Account
+// @Router /accounts [get]
+// @Schemes
+// @Produce json
+// @Success 200 {object} domain.AccountList
+func (handler *accountHandler) GetAccounts(context *gin.Context) {
+	response, err := handler.accountUs.GetAccounts()
 	if err != nil {
 		context.AbortWithStatusJSON(
 			domain.GetErrorStatusCode(err),

@@ -119,3 +119,51 @@ func TestCreateAccount_CountByCpfError(t *testing.T) {
 
 	mockRepo.AssertExpectations(t)
 }
+
+func TestGetAccounts_Success(t *testing.T) {
+	mockRepo := new(mocks.MockAccountRepository)
+	usecase := NewAccountUsecase(mockRepo)
+
+	accounts := []domain.Account{
+		{Id: uuid.NewString()},
+		{Id: uuid.NewString()},
+	}
+
+	mockRepo.On("GetAccounts").Return(accounts, nil)
+
+	response, err := usecase.GetAccounts()
+	assert.NoError(t, err)
+	assert.NotNil(t, response)
+	assert.Equal(t, len(accounts), len(response.Accounts))
+
+	mockRepo.AssertExpectations(t)
+}
+
+func TestGetAccounts_Success_EmptyList(t *testing.T) {
+	mockRepo := new(mocks.MockAccountRepository)
+	usecase := NewAccountUsecase(mockRepo)
+
+	mockRepo.On("GetAccounts").Return([]domain.Account{}, nil)
+
+	response, err := usecase.GetAccounts()
+	assert.NoError(t, err)
+	assert.NotNil(t, response)
+	assert.Equal(t, 0, len(response.Accounts))
+
+	mockRepo.AssertExpectations(t)
+}
+
+func TestGetAccounts_ErrorRetrievingAccounts(t *testing.T) {
+	mockRepo := new(mocks.MockAccountRepository)
+	usecase := NewAccountUsecase(mockRepo)
+
+	expectedErr := errors.New("error retrieving accounts")
+
+	mockRepo.On("GetAccounts").Return([]domain.Account{}, expectedErr)
+
+	response, err := usecase.GetAccounts()
+	assert.ErrorIs(t, err, expectedErr)
+	assert.Nil(t, response)
+
+	mockRepo.AssertExpectations(t)
+}

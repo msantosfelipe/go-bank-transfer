@@ -15,9 +15,13 @@ type Account struct {
 	Id        string    `json:"id"`
 	Name      string    `json:"string"`
 	Cpf       string    `json:"cpf"`
-	Secret    string    `json:"secret"`
-	Balance   string    `json:"balance"`
+	Secret    string    `json:"-"`
+	Balance   float64   `json:"-"`
 	CreatedAt time.Time `json:"createdAt"`
+}
+
+type AccountList struct {
+	Accounts []Account `json:"accounts"`
 }
 
 type AccountCreatorRequest struct {
@@ -33,10 +37,12 @@ type AccountCreatorResponse struct {
 // Account usecase methods deifinition
 type AccountUsecase interface {
 	CreateAccount(request AccountCreatorRequest) (*AccountCreatorResponse, error)
+	GetAccounts() (*AccountList, error)
 }
 
 // Account repository methods deifinition
 type AccountRepository interface {
 	CreateAccount(name, cpf, hashedPassword string) (*AccountCreatorResponse, error)
 	CountAccountByCpf(cpf string) (int64, error)
+	GetAccounts() ([]Account, error)
 }

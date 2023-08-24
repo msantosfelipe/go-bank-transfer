@@ -84,3 +84,30 @@ func (r *accountRepository) CountAccountByCpf(cpf string) (int64, error) {
 
 	return count, nil
 }
+
+func (r *accountRepository) GetAccounts() ([]domain.Account, error) {
+	ctx := context.Background()
+	defer ctx.Done()
+
+	queries := queries.New(r.dbClient)
+
+	response, err := queries.GetAccounts(ctx)
+	if err != nil {
+		logrus.Error("error retrieving accounts - ", err)
+		return nil, err
+	}
+
+	var accounts []domain.Account
+	for _, i := range response {
+		accounts = append(accounts, domain.Account{
+			Id:     i.ID.String(),
+			Name:   i.Name,
+			Cpf:    i.Cpf,
+			Secret: i.Secret,
+			//Balance:   i.Balance,
+			CreatedAt: i.CreatedAt,
+		})
+	}
+
+	return accounts, nil
+}

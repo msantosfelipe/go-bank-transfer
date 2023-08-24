@@ -17,6 +17,24 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/accounts": {
+            "get": {
+                "description": "Return the list of all accounts. Fields 'secret' and 'balance' are omitted",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get Accounts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.AccountList"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create new Account in case 'cpf' doesn't exists yet",
                 "consumes": [
@@ -52,6 +70,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domain.Account": {
+            "type": "object",
+            "properties": {
+                "cpf": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "string": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.AccountCreatorRequest": {
             "type": "object",
             "properties": {
@@ -71,6 +106,17 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.AccountList": {
+            "type": "object",
+            "properties": {
+                "accounts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Account"
+                    }
                 }
             }
         }
