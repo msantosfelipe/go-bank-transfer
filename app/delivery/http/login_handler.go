@@ -32,11 +32,13 @@ func NewLoginHandler(router *gin.RouterGroup, loginUs domain.LoginUsecase) {
 // @Description Authemticate user
 // @Tags Login
 // @Router /login [post]
-// @Schemes
 // @Param Login body domain.Login true "Login request"
 // @Accept json
 // @Produce json
 // @Success 201 {object} domain.JwtToken
+// @Failure 400 {object} domain.ResponseError
+// @Failure 401 {object} domain.ResponseError
+// @Failure 500 {object} domain.ResponseError
 func (handler *loginHandler) authenticate(context *gin.Context) {
 	var body domain.Login
 	if err := context.BindJSON(&body); err != nil {

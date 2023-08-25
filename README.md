@@ -23,17 +23,20 @@ API for bank transfers from a digital bank
 - Documentation (Swagger) - http://localhost:8081/go-bank-transfer/swagger/index.html
 
 ## Features
-- Accounts
+- Accounts:
     - Get list of accounts
     - Get account balance
     - Create an account
-- Login
+- Login:
     - Authenticate a user
         - The default logins/secrets are:
             - `87832842067` / `LetsGo321@`
-- Transfer
+- Transfer:
     - Get authenticated user transfers - TODO
-    - Make a transfer between accounts - TODO
+    - Make a transfer between accounts
+
+#### Future features
+- Login - Forgot password
 
 ## License
 - MIT

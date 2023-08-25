@@ -16,9 +16,13 @@ import (
 	"github.com/msantosfelipe/go-bank-transfer/app/repository/db"
 	"github.com/msantosfelipe/go-bank-transfer/app/usecase"
 	"github.com/msantosfelipe/go-bank-transfer/config"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
+	// log
+	configureLog()
+
 	// init db
 	ctx := context.Background()
 	dbClient, err := pgxpool.Connect(ctx, config.ENV.DbUri)
@@ -37,4 +41,11 @@ func main() {
 
 	// init routers
 	http.InitHttpRouters(accountUs, loginUs, transferUs)
+}
+
+func configureLog() {
+	logrus.SetReportCaller(true)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
 }

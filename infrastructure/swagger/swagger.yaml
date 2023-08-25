@@ -48,6 +48,31 @@ definitions:
       secret:
         type: string
     type: object
+  domain.ResponseError:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.TransferCreatorResponse:
+    properties:
+      id:
+        type: string
+      new_account_destination_balance:
+        type: number
+      new_account_origin_balance:
+        type: number
+      old_account_destination_balance:
+        type: number
+      old_account_origin_balance:
+        type: number
+    type: object
+  domain.TransferRequest:
+    properties:
+      account_destination_id:
+        type: string
+      amount:
+        type: number
+    type: object
 info:
   contact: {}
 paths:
@@ -62,9 +87,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.AccountList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
       summary: Get accounts
       tags:
-      - Account
+      - Accounts
     post:
       consumes:
       - application/json
@@ -83,9 +116,21 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/domain.AccountCreatorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
       summary: Create account
       tags:
-      - Account
+      - Accounts
   /accounts/{account_id}/balance:
     get:
       description: Return account balance
@@ -102,9 +147,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.AccountBalance'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
       summary: Get account balance
       tags:
-      - Account
+      - Accounts
   /login:
     post:
       consumes:
@@ -124,7 +177,54 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/domain.JwtToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
       summary: Login
       tags:
       - Login
+  /transfers:
+    post:
+      consumes:
+      - application/json
+      description: Transfer amount from origin account to destination account
+      parameters:
+      - description: Transfer request
+        in: body
+        name: TransferRequest
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TransferRequest'
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.TransferCreatorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+      summary: Transfer amount
+      tags:
+      - Transfers
 swagger: "2.0"

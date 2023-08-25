@@ -28,6 +28,18 @@ func NewTransferHandler(router *gin.RouterGroup, transferUs domain.TransferUseca
 	router.POST("/transfers", handler.createTransfer)
 }
 
+// @BasePath /go-bank-transfer
+// @Summary Transfer amount
+// @Description Transfer amount from origin account to destination account
+// @Tags Transfers
+// @Router /transfers [post]
+// @Param TransferRequest body domain.TransferRequest true "Transfer request"
+// @Param Authorization header string true "Token"
+// @Accept json
+// @Produce json
+// @Success 201 {object} domain.TransferCreatorResponse
+// @Failure 400 {object} domain.ResponseError
+// @Failure 500 {object} domain.ResponseError
 func (handler *transferHandler) createTransfer(context *gin.Context) {
 	originAccountId, err := jwt.ExtractAccountOriginId(context)
 	if err != nil {
