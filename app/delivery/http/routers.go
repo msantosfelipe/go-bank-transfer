@@ -18,14 +18,13 @@ import (
 )
 
 func InitHttpRouters(
-	basePath string,
 	accountUs domain.AccountUsecase,
 	loginUs domain.LoginUsecase,
 ) {
 	engine := gin.New()
-	apiRouter := engine.Group(basePath)
+	apiRouter := engine.Group(config.ENV.ApiBasePath)
 
-	docs.SwaggerInfo.BasePath = basePath
+	docs.SwaggerInfo.BasePath = config.ENV.ApiBasePath
 	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// Public routes
@@ -33,8 +32,8 @@ func InitHttpRouters(
 		middleware.LogMiddleware,
 	)
 
-	NewAccountRouter(apiRouter, accountUs)
-	NewLoginRouter(apiRouter, loginUs)
+	NewAccountHandler(apiRouter, accountUs)
+	NewLoginHandler(apiRouter, loginUs)
 
 	// Protected routes
 	apiRouter.Use(

@@ -18,8 +18,6 @@ import (
 	"github.com/msantosfelipe/go-bank-transfer/config"
 )
 
-const basePath = "/go-bank-transfer"
-
 func main() {
 	// init db
 	ctx := context.Background()
@@ -36,5 +34,5 @@ func main() {
 	loginUs := usecase.NewLoginUsecase(loginRepo)
 
 	// init routers
-	http.InitHttpRouters(basePath, accountUs, loginUs)
+	http.InitHttpRouters(accountUs, loginUs)
 }

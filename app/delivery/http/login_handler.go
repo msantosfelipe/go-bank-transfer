@@ -18,8 +18,8 @@ type loginHandler struct {
 	loginUs domain.LoginUsecase
 }
 
-// NewLoginRouter handle REST requests
-func NewLoginRouter(router *gin.RouterGroup, loginUs domain.LoginUsecase) {
+// NewLoginHandler handle REST requests
+func NewLoginHandler(router *gin.RouterGroup, loginUs domain.LoginUsecase) {
 	handler := loginHandler{
 		loginUs: loginUs,
 	}

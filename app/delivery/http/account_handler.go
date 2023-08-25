@@ -18,8 +18,8 @@ type accountHandler struct {
 	accountUs domain.AccountUsecase
 }
 
-// NewAccountRouter handle REST requests
-func NewAccountRouter(router *gin.RouterGroup, accountUs domain.AccountUsecase) {
+// NewAccountHandler handle REST requests
+func NewAccountHandler(router *gin.RouterGroup, accountUs domain.AccountUsecase) {
 	handler := accountHandler{
 		accountUs: accountUs,
 	}
