@@ -12,7 +12,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
-	"github.com/msantosfelipe/go-bank-transfer/infrastructure/logger"
 )
 
 type loginHandler struct {
@@ -24,10 +23,6 @@ func NewLoginRouter(router *gin.RouterGroup, loginUs domain.LoginUsecase) {
 	handler := loginHandler{
 		loginUs: loginUs,
 	}
-
-	router.Use(
-		logger.LogMiddleware,
-	)
 
 	router.POST("/login", handler.authenticate)
 }

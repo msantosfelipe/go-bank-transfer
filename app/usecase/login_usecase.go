@@ -8,13 +8,10 @@
 package usecase
 
 import (
-	"time"
-
-	jwt "github.com/golang-jwt/jwt/v5"
-	"github.com/msantosfelipe/go-bank-transfer/config"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
+	"github.com/msantosfelipe/go-bank-transfer/infrastructure/crypto"
+	"github.com/msantosfelipe/go-bank-transfer/infrastructure/jwt"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type loginUsecase struct {
@@ -37,12 +34,12 @@ func (uc *loginUsecase) AuthenticateUser(credentials domain.Login) (*domain.JwtT
 		return nil, err
 	}
 
-	if ok := doPasswordsMatch(login.Secret, credentials.Secret); !ok {
+	if ok := crypto.DoPasswordsMatch(login.Secret, credentials.Secret); !ok {
 		logrus.Error("invalid password")
 		return nil, domain.ErrInvalidLogin
 	}
 
-	jwtToken, err := generateToken(accountId)
+	jwtToken, err := jwt.GenerateToken(accountId)
 	if err != nil {
 		logrus.Error("error generatin token - ", err)
 		return nil, err
@@ -51,18 +48,4 @@ func (uc *loginUsecase) AuthenticateUser(credentials domain.Login) (*domain.JwtT
 	return &domain.JwtToken{
 		Token: jwtToken,
 	}, nil
-}
-
-func doPasswordsMatch(hashedPassword, requestPassword string) bool {
-	err := bcrypt.CompareHashAndPassword(
-		[]byte(hashedPassword), []byte(requestPassword))
-	return err == nil
-}
-
-func generateToken(accountId string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"account_origin_id": accountId,
-		"exp":               time.Now().Add(time.Minute * time.Duration(config.ENV.JwtTokenExpMinutes)).Unix(),
-	})
-	return token.SignedString([]byte(config.ENV.JwtTokenSecret))
 }

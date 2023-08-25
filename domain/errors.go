@@ -25,6 +25,8 @@ var (
 	ErrInvalidLogin = errors.New("login or password is not valid")
 	// ErrAccountConflict will throw if the search query returns will no results
 	ErrNoRowsInResultSet = errors.New("no rows in result set")
+	// ErrUserNotAuthorized will throw if the uses tries to access a protected resource with an invalid token
+	ErrUserNotAuthorized = errors.New("user not authorized")
 )
 
 // ResponseError struct definition
