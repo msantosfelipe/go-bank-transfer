@@ -22,3 +22,11 @@ type Login struct {
 	Cpf    string
 	Secret string
 }
+
+type Transfer struct {
+	ID                   uuid.UUID
+	AccountOriginID      uuid.UUID
+	AccountDestinationID uuid.UUID
+	Amount               int64
+	CreatedAt            time.Time
+}
