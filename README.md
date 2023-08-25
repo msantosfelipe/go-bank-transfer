@@ -24,11 +24,11 @@ API for bank transfers from a digital bank
 
 ## Features
 - Accounts
-    - Get list of accounts - TODO
-    - Get account balance - TODO
+    - Get list of accounts
+    - Get account balance
     - Create an account
 - Login
-    - Authenticate a user - TODO
+    - Authenticate a user
         - The default logins/secrets are:
             - `87832842067` / `LetsGo321@`
 - Transfer
