@@ -36,7 +36,8 @@ API for bank transfers from a digital bank
     - Make a transfer between accounts
 
 #### Future features
-- Login - Forgot password
+- Login - Forgot password feature
+- Cover more repositories with unit tests
 
 ## License
 - MIT
