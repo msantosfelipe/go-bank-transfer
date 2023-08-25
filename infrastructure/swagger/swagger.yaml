@@ -3,7 +3,7 @@ definitions:
     properties:
       cpf:
         type: string
-      createdAt:
+      created_at:
         type: string
       id:
         type: string
@@ -35,6 +35,18 @@ definitions:
         items:
           $ref: '#/definitions/domain.Account'
         type: array
+    type: object
+  domain.JwtToken:
+    properties:
+      token:
+        type: string
+    type: object
+  domain.Login:
+    properties:
+      cpf:
+        type: string
+      secret:
+        type: string
     type: object
 info:
   contact: {}
@@ -93,4 +105,26 @@ paths:
       summary: Get account balance
       tags:
       - Account
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authemticate user
+      parameters:
+      - description: Login request
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.JwtToken'
+      summary: Login
+      tags:
+      - Login
 swagger: "2.0"
