@@ -9,6 +9,7 @@ package db
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -116,15 +117,16 @@ func (r *accountRepository) GetAccountBalance(accountId uuid.UUID) (float64, err
 
 	queries := queries.New(r.dbClient)
 
-	microMoney, err := queries.GetAccountBalance(ctx, accountId)
+	accountBalances, err := queries.GetAccountsBalances(ctx, []uuid.UUID{accountId})
 	if err != nil {
 		logrus.Error("error retrieving account balance - ", err)
 		return 0, err
 	}
 
-	return microMoneytoMoney(microMoney), nil
-}
+	if len(accountBalances) == 1 {
+		return microMoneytoMoney(accountBalances[0].Balance), nil
+	}
 
-func microMoneytoMoney(microMoney int64) float64 {
-	return float64(microMoney) / 1000000.0
+	logrus.Error("account balance returned more than one account")
+	return 0, errors.New("error retrieving account balance")
 }

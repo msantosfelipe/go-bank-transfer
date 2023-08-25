@@ -27,6 +27,10 @@ var (
 	ErrNoRowsInResultSet = errors.New("no rows in result set")
 	// ErrUserNotAuthorized will throw if the uses tries to access a protected resource with an invalid token
 	ErrUserNotAuthorized = errors.New("user not authorized")
+	// ErrInsifficientFunds will throw if the origin account has insifficient funds to make the transfer
+	ErrInsifficientFunds = errors.New("origin account does not have sufficient funds for transfer")
+	// ErrInsifficientFunds will throw if the user tries to pass an invalid account id
+	ErrInvalidAccountId = errors.New("invalid account id")
 )
 
 // ResponseError struct definition
@@ -58,6 +62,10 @@ func GetErrorStatusCode(err error) int {
 	case ErrAccountConflict:
 		return http.StatusConflict
 	case ErrInvalidLogin:
+		return http.StatusBadRequest
+	case ErrInsifficientFunds:
+		return http.StatusBadRequest
+	case ErrInvalidAccountId:
 		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError

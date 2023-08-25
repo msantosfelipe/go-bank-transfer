@@ -32,7 +32,9 @@ func main() {
 	accountUs := usecase.NewAccountUsecase(accountRepo)
 	loginRepo := db.NewLoginRepository(dbClient)
 	loginUs := usecase.NewLoginUsecase(loginRepo)
+	transferRepo := db.NewTransferRepository(dbClient)
+	transferUs := usecase.NewTransferUsecase(transferRepo)
 
 	// init routers
-	http.InitHttpRouters(accountUs, loginUs)
+	http.InitHttpRouters(accountUs, loginUs, transferUs)
 }

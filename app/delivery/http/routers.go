@@ -20,6 +20,7 @@ import (
 func InitHttpRouters(
 	accountUs domain.AccountUsecase,
 	loginUs domain.LoginUsecase,
+	transferUs domain.TransferUsecase,
 ) {
 	engine := gin.New()
 	apiRouter := engine.Group(config.ENV.ApiBasePath)
@@ -27,7 +28,7 @@ func InitHttpRouters(
 	docs.SwaggerInfo.BasePath = config.ENV.ApiBasePath
 	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	// Public routes
+	// public routes
 	apiRouter.Use(
 		middleware.LogMiddleware,
 	)
@@ -35,12 +36,13 @@ func InitHttpRouters(
 	NewAccountHandler(apiRouter, accountUs)
 	NewLoginHandler(apiRouter, loginUs)
 
-	// Protected routes
+	// protected routes
 	apiRouter.Use(
 		middleware.JwthMiddleware,
 	)
 
-	NewBankTransferHandler(apiRouter)
+	NewTransferHandler(apiRouter, transferUs)
 
+	// run app
 	engine.Run(":" + config.ENV.ApiPort)
 }

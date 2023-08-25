@@ -13,7 +13,12 @@ SELECT a.*, l.secret
 FROM accounts a
 INNER JOIN logins l ON a.cpf = l.cpf;
 
--- name: GetAccountBalance :one
-SELECT a.balance
+-- name: GetAccountsBalances :many
+SELECT a.id, a.balance
 FROM accounts a
+WHERE a.id = ANY($1::uuid[]);
+
+-- name: UpdateAccountBalance :exec
+UPDATE accounts a
+SET balance = $2
 WHERE a.id = $1;

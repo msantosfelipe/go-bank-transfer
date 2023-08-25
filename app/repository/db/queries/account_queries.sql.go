@@ -44,19 +44,6 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (u
 	return id, err
 }
 
-const getAccountBalance = `-- name: GetAccountBalance :one
-SELECT a.balance
-FROM accounts a
-WHERE a.id = $1
-`
-
-func (q *Queries) GetAccountBalance(ctx context.Context, id uuid.UUID) (int64, error) {
-	row := q.db.QueryRow(ctx, getAccountBalance, id)
-	var balance int64
-	err := row.Scan(&balance)
-	return balance, err
-}
-
 const getAccounts = `-- name: GetAccounts :many
 SELECT a.id, a.name, a.cpf, a.balance, a.created_at, l.secret
 FROM accounts a
@@ -97,4 +84,51 @@ func (q *Queries) GetAccounts(ctx context.Context) ([]GetAccountsRow, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const getAccountsBalances = `-- name: GetAccountsBalances :many
+SELECT a.id, a.balance
+FROM accounts a
+WHERE a.id = ANY($1::uuid[])
+`
+
+type GetAccountsBalancesRow struct {
+	ID      uuid.UUID
+	Balance int64
+}
+
+func (q *Queries) GetAccountsBalances(ctx context.Context, dollar_1 []uuid.UUID) ([]GetAccountsBalancesRow, error) {
+	rows, err := q.db.Query(ctx, getAccountsBalances, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetAccountsBalancesRow
+	for rows.Next() {
+		var i GetAccountsBalancesRow
+		if err := rows.Scan(&i.ID, &i.Balance); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateAccountBalance = `-- name: UpdateAccountBalance :exec
+UPDATE accounts a
+SET balance = $2
+WHERE a.id = $1
+`
+
+type UpdateAccountBalanceParams struct {
+	ID      uuid.UUID
+	Balance int64
+}
+
+func (q *Queries) UpdateAccountBalance(ctx context.Context, arg UpdateAccountBalanceParams) error {
+	_, err := q.db.Exec(ctx, updateAccountBalance, arg.ID, arg.Balance)
+	return err
 }
