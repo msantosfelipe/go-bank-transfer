@@ -23,7 +23,9 @@ func NewTransferUsecase(repository domain.TransferRepository) domain.TransferUse
 	}
 }
 
-func (uc *transferUsecase) TransferBetweenAccounts(originAccountId string, request domain.TransferRequest) (*domain.TransferCreatorResponse, error) {
+func (uc *transferUsecase) TransferBetweenAccounts(
+	originAccountId string, request domain.TransferRequest,
+) (*domain.TransferCreatorResponse, error) {
 	originUuid, destinationUuid, err := generateUuids(originAccountId, request.AccountDestinationId)
 	if err != nil {
 		return nil, err
@@ -36,13 +38,13 @@ func generateUuids(originId, destinationId string) (uuid.UUID, uuid.UUID, error)
 	originUuid, err := uuid.Parse(originId)
 	if err != nil {
 		logrus.Error("invalid account origin id")
-		return uuid.UUID{}, uuid.UUID{}, err
+		return uuid.UUID{}, uuid.UUID{}, domain.ErrInvalidAccountId
 	}
 
 	destinationUuid, err := uuid.Parse(destinationId)
 	if err != nil {
 		logrus.Error("invalid account destination id")
-		return uuid.UUID{}, uuid.UUID{}, err
+		return uuid.UUID{}, uuid.UUID{}, domain.ErrInvalidAccountId
 	}
 
 	return originUuid, destinationUuid, nil
