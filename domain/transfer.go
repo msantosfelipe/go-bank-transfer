@@ -40,10 +40,14 @@ type TransferCreatorResponse struct {
 
 // Transfer usecase methods deifinition
 type TransferUsecase interface {
-	TransferBetweenAccounts(originAccountId string, request TransferRequest) (*TransferCreatorResponse, error)
+	TransferBetweenAccounts(
+		originAccountId string, request TransferRequest,
+	) (*TransferCreatorResponse, error)
 }
 
 // Transfer repository methods deifinition
 type TransferRepository interface {
-	TransferBetweenAccounts(amount float64, accountOriginId, accountDestinationId uuid.UUID) (*TransferCreatorResponse, error)
+	TransferBetweenAccounts(
+		amount float64, accountOriginId, accountDestinationId uuid.UUID,
+	) (*TransferCreatorResponse, error)
 }

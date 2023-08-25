@@ -37,7 +37,8 @@ API for bank transfers from a digital bank
 
 #### Future features
 - Login - Forgot password feature
-- Cover more repositories with unit tests
+- Cover repositories and handlers with unit tests
+- Cover project with integration tests
 
 ## License
 - MIT
