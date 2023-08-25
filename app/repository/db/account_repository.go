@@ -96,7 +96,7 @@ func (r *accountRepository) GetAccounts() ([]domain.Account, error) {
 		return nil, err
 	}
 
-	var accounts []domain.Account
+	accounts := make([]domain.Account, 0)
 	for _, i := range response {
 		accounts = append(accounts, domain.Account{
 			Id:        i.ID.String(),
@@ -123,10 +123,15 @@ func (r *accountRepository) GetAccountBalance(accountId uuid.UUID) (float64, err
 		return 0, err
 	}
 
-	if len(accountBalances) == 1 {
-		return microMoneytoMoney(accountBalances[0].Balance), nil
+	if len(accountBalances) == 0 {
+		logrus.Error("account not found")
+		return 0, domain.ErrAccountNotFound
 	}
 
-	logrus.Error("account balance returned more than one account")
-	return 0, errors.New("error retrieving account balance")
+	if len(accountBalances) >= 1 {
+		logrus.Error("account balance returned more than one account")
+		return 0, errors.New("error retrieving account balance")
+	}
+
+	return microMoneytoMoney(accountBalances[0].Balance), nil
 }

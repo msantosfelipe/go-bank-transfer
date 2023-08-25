@@ -91,6 +91,7 @@ func (handler *accountHandler) GetAccounts(context *gin.Context) {
 // @Produce json
 // @Success 200 {object} domain.AccountBalance
 // @Failure 400 {object} domain.ResponseError
+// @Failure 404 {object} domain.ResponseError
 // @Failure 500 {object} domain.ResponseError
 func (handler *accountHandler) GetAccountBalance(context *gin.Context) {
 	accountId, exists := context.Params.Get("account_id")

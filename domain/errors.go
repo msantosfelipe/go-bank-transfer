@@ -31,6 +31,8 @@ var (
 	ErrInsifficientFunds = errors.New("origin account does not have sufficient funds for transfer")
 	// ErrInsifficientFunds will throw if the user tries to pass an invalid account id
 	ErrInvalidAccountId = errors.New("invalid account id")
+	// ErrInsifficientFunds will throw if the account was not found in database
+	ErrAccountNotFound = errors.New("account not found")
 )
 
 // ResponseError struct definition
@@ -67,6 +69,8 @@ func GetErrorStatusCode(err error) int {
 		return http.StatusBadRequest
 	case ErrInvalidAccountId:
 		return http.StatusBadRequest
+	case ErrAccountNotFound:
+		return http.StatusNotFound
 	default:
 		return http.StatusInternalServerError
 	}
