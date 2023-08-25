@@ -13,8 +13,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
+	"github.com/msantosfelipe/go-bank-transfer/infrastructure/crypto"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type accountUsecase struct {
@@ -43,7 +43,7 @@ func (uc *accountUsecase) CreateAccount(request domain.AccountCreatorRequest) (*
 		return nil, domain.ErrAccountConflict
 	}
 
-	hashedPassword, err := hashPassword(request.Secret)
+	hashedPassword, err := crypto.HashPassword(request.Secret)
 	if err != nil {
 		logrus.Error("error hashing password - ", err)
 		return nil, err
@@ -87,11 +87,4 @@ func (uc *accountUsecase) GetAccountBalance(accountId string) (*domain.AccountBa
 func isValidCpf(cpf string) bool {
 	validPattern := regexp.MustCompile(`^\d{11}$`)
 	return validPattern.MatchString(cpf)
-}
-
-func hashPassword(password string) (string, error) {
-	var passwordBytes = []byte(password)
-	hashedPasswordBytes, err := bcrypt.
-		GenerateFromPassword(passwordBytes, bcrypt.DefaultCost)
-	return string(hashedPasswordBytes), err
 }

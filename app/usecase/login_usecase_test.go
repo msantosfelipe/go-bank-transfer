@@ -14,6 +14,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/app/usecase/mocks"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
+	"github.com/msantosfelipe/go-bank-transfer/infrastructure/crypto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -31,7 +32,7 @@ func TestAuthenticateUser_Success(t *testing.T) {
 		Secret: secret,
 	}
 
-	hashedSecret, err := hashPassword(credentials.Secret)
+	hashedSecret, err := crypto.HashPassword(credentials.Secret)
 	if err != nil {
 		panic(err)
 	}
@@ -100,7 +101,7 @@ func TestAuthenticateUser_PasswordsDoNotMatch(t *testing.T) {
 	}
 
 	storedSecret := "secret2"
-	hashedSecret, err := hashPassword(storedSecret)
+	hashedSecret, err := crypto.HashPassword(storedSecret)
 	if err != nil {
 		panic(err)
 	}
