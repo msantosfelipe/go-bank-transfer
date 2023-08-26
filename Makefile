@@ -3,7 +3,21 @@ DB_USER = master
 DB_PASS = greenbeans
 DB_NAME = bank-transfer
 
-.PHONY: swagger db-up db-down db-create db-drop db-migrate
+.PHONY: run stop docker-build docker-run tests swagger db-up db-down db-create db-drop db-migrate
+
+# Run on docker-composer
+run:
+	docker-compose up -d
+
+stop:
+	docker-compose down
+
+# Run on docker
+docker-build:
+	docker build -t go-bank-transfer:latest .
+
+docker-run:
+	docker run -it --name bank-transfer -p 8080:8080 go-bank-transfer:latest
 
 tests:
 	go test ./app/...
