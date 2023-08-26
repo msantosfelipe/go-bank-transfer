@@ -33,7 +33,7 @@ API for bank transfers from a digital bank
         - The default logins/secrets are:
             - `87832842067` / `LetsGo321@`
 - Transfer:
-    - Get authenticated user transfers - TODO
+    - Get authenticated user transfers
     - Make a transfer between accounts
 
 #### Future features
