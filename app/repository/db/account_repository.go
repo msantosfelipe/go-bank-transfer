@@ -104,7 +104,7 @@ func (r *accountRepository) GetAccounts() ([]domain.Account, error) {
 			Cpf:       i.Cpf,
 			Secret:    i.Secret,
 			Balance:   microMoneytoMoney(i.Balance),
-			CreatedAt: i.CreatedAt,
+			CreatedAt: formatDate(i.CreatedAt),
 		})
 	}
 

@@ -9,9 +9,7 @@ package usecase
 
 import (
 	"fmt"
-	"regexp"
 
-	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
 	"github.com/msantosfelipe/go-bank-transfer/infrastructure/crypto"
 	"github.com/sirupsen/logrus"
@@ -70,9 +68,8 @@ func (uc *accountUsecase) GetAccounts() (*domain.AccountList, error) {
 }
 
 func (uc *accountUsecase) GetAccountBalance(accountId string) (*domain.AccountBalance, error) {
-	parsedUUID, err := uuid.Parse(accountId)
+	parsedUUID, err := generateAccountUuid(accountId)
 	if err != nil {
-		logrus.Error("error parsing uuid - ", err)
 		return nil, err
 	}
 
@@ -82,9 +79,4 @@ func (uc *accountUsecase) GetAccountBalance(accountId string) (*domain.AccountBa
 	}
 
 	return &domain.AccountBalance{Balance: balance}, nil
-}
-
-func isValidCpf(cpf string) bool {
-	validPattern := regexp.MustCompile(`^\d{11}$`)
-	return validPattern.MatchString(cpf)
 }

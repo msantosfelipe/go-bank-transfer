@@ -8,9 +8,7 @@
 package usecase
 
 import (
-	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/domain"
-	"github.com/sirupsen/logrus"
 )
 
 type transferUsecase struct {
@@ -26,7 +24,12 @@ func NewTransferUsecase(repository domain.TransferRepository) domain.TransferUse
 func (uc *transferUsecase) TransferBetweenAccounts(
 	originAccountId string, request domain.TransferRequest,
 ) (*domain.TransferCreatorResponse, error) {
-	originUuid, destinationUuid, err := generateUuids(originAccountId, request.AccountDestinationId)
+	originUuid, err := generateAccountUuid(originAccountId)
+	if err != nil {
+		return nil, err
+	}
+
+	destinationUuid, err := generateAccountUuid(request.AccountDestinationId)
 	if err != nil {
 		return nil, err
 	}
@@ -34,18 +37,18 @@ func (uc *transferUsecase) TransferBetweenAccounts(
 	return uc.repository.TransferBetweenAccounts(request.Amount, originUuid, destinationUuid)
 }
 
-func generateUuids(originId, destinationId string) (uuid.UUID, uuid.UUID, error) {
-	originUuid, err := uuid.Parse(originId)
+func (uc *transferUsecase) GetAccountOriginTransfers(accountOriginId string) (*domain.TransferList, error) {
+	parsedUUID, err := generateAccountUuid(accountOriginId)
 	if err != nil {
-		logrus.Error("invalid account origin id")
-		return uuid.UUID{}, uuid.UUID{}, domain.ErrInvalidAccountId
+		return nil, err
 	}
 
-	destinationUuid, err := uuid.Parse(destinationId)
+	transfers, err := uc.repository.GetAccountOriginTransfers(parsedUUID)
 	if err != nil {
-		logrus.Error("invalid account destination id")
-		return uuid.UUID{}, uuid.UUID{}, domain.ErrInvalidAccountId
+		return nil, err
 	}
 
-	return originUuid, destinationUuid, nil
+	return &domain.TransferList{
+		Transfers: transfers,
+	}, nil
 }

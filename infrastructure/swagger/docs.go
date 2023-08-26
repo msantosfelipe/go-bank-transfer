@@ -198,6 +198,48 @@ const docTemplate = `{
             }
         },
         "/transfers": {
+            "get": {
+                "description": "Returns a list of transfers from logged user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transfers"
+                ],
+                "summary": "Get origin account transfers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TransferList"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ResponseError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Transfer amount from origin account to destination account",
                 "consumes": [
@@ -337,6 +379,26 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.Transfer": {
+            "type": "object",
+            "properties": {
+                "account_destination_id": {
+                    "type": "string"
+                },
+                "account_origin_id": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.TransferCreatorResponse": {
             "type": "object",
             "properties": {
@@ -354,6 +416,17 @@ const docTemplate = `{
                 },
                 "old_account_origin_balance": {
                     "type": "number"
+                }
+            }
+        },
+        "domain.TransferList": {
+            "type": "object",
+            "properties": {
+                "transfers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Transfer"
+                    }
                 }
             }
         },

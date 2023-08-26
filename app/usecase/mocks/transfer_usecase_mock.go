@@ -24,3 +24,10 @@ func (m *MockTransferRepository) TransferBetweenAccounts(
 	args := m.Called(amount, accountOriginId, accountDestinationId)
 	return args.Get(0).(*domain.TransferCreatorResponse), args.Error(1)
 }
+
+func (m *MockTransferRepository) GetAccountOriginTransfers(
+	accountOriginId uuid.UUID,
+) ([]domain.Transfer, error) {
+	args := m.Called(accountOriginId)
+	return args.Get(0).([]domain.Transfer), args.Error(1)
+}

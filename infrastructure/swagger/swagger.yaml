@@ -53,6 +53,19 @@ definitions:
       message:
         type: string
     type: object
+  domain.Transfer:
+    properties:
+      account_destination_id:
+        type: string
+      account_origin_id:
+        type: string
+      amount:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: string
+    type: object
   domain.TransferCreatorResponse:
     properties:
       id:
@@ -65,6 +78,13 @@ definitions:
         type: number
       old_account_origin_balance:
         type: number
+    type: object
+  domain.TransferList:
+    properties:
+      transfers:
+        items:
+          $ref: '#/definitions/domain.Transfer'
+        type: array
     type: object
   domain.TransferRequest:
     properties:
@@ -197,6 +217,34 @@ paths:
       tags:
       - Login
   /transfers:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of transfers from logged user
+      parameters:
+      - description: Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.TransferList'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ResponseError'
+      summary: Get origin account transfers
+      tags:
+      - Transfers
     post:
       consumes:
       - application/json
