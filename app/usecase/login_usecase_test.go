@@ -64,6 +64,8 @@ func TestAuthenticateUser_LoginDoesNotExists(t *testing.T) {
 	mockRepo.On("GetLoginAndAccount", mock.Anything).Return(&domain.Login{}, "", domain.ErrNoRowsInResultSet)
 
 	jwtToken, err := usecase.AuthenticateUser(credentials)
+
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedError)
 	assert.Nil(t, jwtToken)
 	mockRepo.AssertExpectations(t)
@@ -82,6 +84,8 @@ func TestAuthenticateUser_ErrorRetrievingLogin(t *testing.T) {
 	mockRepo.On("GetLoginAndAccount", mock.Anything).Return(&domain.Login{}, "", expectedError)
 
 	jwtToken, err := usecase.AuthenticateUser(credentials)
+
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedError)
 	assert.Nil(t, jwtToken)
 	mockRepo.AssertExpectations(t)
@@ -114,6 +118,8 @@ func TestAuthenticateUser_PasswordsDoNotMatch(t *testing.T) {
 	mockRepo.On("GetLoginAndAccount", mock.Anything).Return(&storedLogin, accountId, nil)
 
 	jwtToken, err := usecase.AuthenticateUser(credentials)
+
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, domain.ErrInvalidLogin)
 	assert.Nil(t, jwtToken)
 	mockRepo.AssertExpectations(t)

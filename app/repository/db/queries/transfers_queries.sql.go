@@ -35,3 +35,35 @@ func (q *Queries) CreateTransfer(ctx context.Context, arg CreateTransferParams) 
 	err := row.Scan(&id)
 	return id, err
 }
+
+const getTransfers = `-- name: GetTransfers :many
+SELECT id, account_origin_id, account_destination_id, amount, created_at
+FROM transfers t
+WHERE t.account_origin_id = $1
+`
+
+func (q *Queries) GetTransfers(ctx context.Context, accountOriginID uuid.UUID) ([]Transfer, error) {
+	rows, err := q.db.Query(ctx, getTransfers, accountOriginID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Transfer
+	for rows.Next() {
+		var i Transfer
+		if err := rows.Scan(
+			&i.ID,
+			&i.AccountOriginID,
+			&i.AccountDestinationID,
+			&i.Amount,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

@@ -59,6 +59,7 @@ func TestCreateAccount_InvalidCpfLenght(t *testing.T) {
 
 	response, err := usecase.CreateAccount(request)
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, domain.ErrAccountInvalidCpf)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -76,6 +77,7 @@ func TestCreateAccount_InvalidCpfDigits(t *testing.T) {
 
 	response, err := usecase.CreateAccount(request)
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, domain.ErrAccountInvalidCpf)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -95,6 +97,7 @@ func TestCreateAccount_CpfAlreadyExists(t *testing.T) {
 
 	response, err := usecase.CreateAccount(request)
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, domain.ErrAccountConflict)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -116,6 +119,7 @@ func TestCreateAccount_CountByCpfError(t *testing.T) {
 
 	response, err := usecase.CreateAccount(request)
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedErr)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -166,6 +170,7 @@ func TestGetAccounts_ErrorRetrievingAccounts(t *testing.T) {
 
 	response, err := usecase.GetAccounts()
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedErr)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -189,14 +194,16 @@ func TestGetAccountBalance_Success(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 }
 
-func TestGetAccountBalance_InvalidUUID(t *testing.T) {
+func TestGetAccountBalance_InvalidAccountIdError(t *testing.T) {
 	mockRepo := new(mocks.MockAccountRepository)
 	usecase := NewAccountUsecase(mockRepo)
+
+	expectedErr := domain.ErrInvalidAccountId
 
 	response, err := usecase.GetAccountBalance("12345")
 
 	assert.Error(t, err)
-	assert.True(t, uuid.IsInvalidLengthError(err))
+	assert.ErrorIs(t, err, expectedErr)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
 }
@@ -211,6 +218,7 @@ func TestGetAccountBalance_ErrorRetrievingBalanceFromDB(t *testing.T) {
 
 	response, err := usecase.GetAccountBalance(uuid.New().String())
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedErr)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)

@@ -64,6 +64,7 @@ func TestTransferBetweenAccounts_InvalidAccountOriginId(t *testing.T) {
 		Amount:               amount,
 	})
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedError)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -84,6 +85,7 @@ func TestTransferBetweenAccounts_InvalidAccountDestinationId(t *testing.T) {
 		Amount:               amount,
 	})
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedError)
 	assert.Nil(t, response)
 	mockRepo.AssertExpectations(t)
@@ -106,6 +108,7 @@ func TestTransferBetweenAccounts_ErrorOnTransferingFunds(t *testing.T) {
 		Amount:               amount,
 	})
 
+	assert.Error(t, err)
 	assert.ErrorIs(t, err, expectedError)
 	mockRepo.AssertExpectations(t)
 }

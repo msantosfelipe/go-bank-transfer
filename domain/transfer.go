@@ -8,24 +8,26 @@
 package domain
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
 // Transfer content struct deifinition
 type Transfer struct {
-	Id                   string    `json:"id"`
-	AccountOriginId      string    `json:"account_origin_id"`
-	AccountDestinationId string    `json:"account_destination_id"`
-	Amount               float64   `json:"amount"`
-	CreatedAt            time.Time `json:"created_at"`
+	Id                   string  `json:"id"`
+	AccountOriginId      string  `json:"account_origin_id"`
+	AccountDestinationId string  `json:"account_destination_id"`
+	Amount               float64 `json:"amount"`
+	CreatedAt            string  `json:"created_at"`
 }
 
 // TransferRequest content struct deifinition
 type TransferRequest struct {
 	AccountDestinationId string  `json:"account_destination_id"`
 	Amount               float64 `json:"amount"`
+}
+
+type TransferList struct {
+	Transfers []Transfer `json:"transfers"`
 }
 
 // TransferCreatorResponse content struct deifinition
@@ -43,6 +45,7 @@ type TransferUsecase interface {
 	TransferBetweenAccounts(
 		originAccountId string, request TransferRequest,
 	) (*TransferCreatorResponse, error)
+	GetAccountOriginTransfers(accountOriginId string) (*TransferList, error)
 }
 
 // Transfer repository methods deifinition
@@ -50,4 +53,5 @@ type TransferRepository interface {
 	TransferBetweenAccounts(
 		amount float64, accountOriginId, accountDestinationId uuid.UUID,
 	) (*TransferCreatorResponse, error)
+	GetAccountOriginTransfers(accountOriginId uuid.UUID) ([]Transfer, error)
 }

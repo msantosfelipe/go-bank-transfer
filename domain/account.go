@@ -8,8 +8,6 @@
 package domain
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -17,12 +15,12 @@ const DefaultBalance = 0
 
 // Account content struct deifinition
 type Account struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"string"`
-	Cpf       string    `json:"cpf"`
-	Secret    string    `json:"-"`
-	Balance   float64   `json:"-"`
-	CreatedAt time.Time `json:"created_at"`
+	Id        string  `json:"id"`
+	Name      string  `json:"string"`
+	Cpf       string  `json:"cpf"`
+	Secret    string  `json:"-"`
+	Balance   float64 `json:"-"`
+	CreatedAt string  `json:"created_at"`
 }
 
 type AccountList struct {

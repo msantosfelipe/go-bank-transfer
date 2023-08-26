@@ -6,9 +6,10 @@ API for bank transfers from a digital bank
 ## Requirements
 - Golang 1.21
 - Docker - if you want to run local database
-- Migrate (https://github.com/golang-migrate/migrate) - if you want to run migrations in database
-- SQLC (https://sqlc.dev/) - if you want to convert sql queries into golang code
-- Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files
+- Make - to run Makefile commands
+- Migrate (https://github.com/golang-migrate/migrate) - if you want to run migrations in database - Run `make db-migrate`
+- SQLC (https://sqlc.dev/) - if you want to convert sql queries into golang code - Run `make db-queries`
+- Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files Run `make swagger`
 
 ## Dependencies
 - Web: `gin`

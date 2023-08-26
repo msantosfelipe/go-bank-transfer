@@ -9,6 +9,7 @@ package db
 
 import (
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/msantosfelipe/go-bank-transfer/app/repository/db/queries"
@@ -46,4 +47,8 @@ func transferBalances(originBalance, destinationBalance, transferAmount int64) (
 	originBalance -= transferAmount
 	destinationBalance += transferAmount
 	return originBalance, destinationBalance
+}
+
+func formatDate(date time.Time) string {
+	return date.Format("02/01/2006 15:04:05")
 }

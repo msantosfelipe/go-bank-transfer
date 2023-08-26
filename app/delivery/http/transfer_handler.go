@@ -26,6 +26,7 @@ func NewTransferHandler(router *gin.RouterGroup, transferUs domain.TransferUseca
 	}
 
 	router.POST("/transfers", handler.createTransfer)
+	router.GET("/transfers", handler.getTransfers)
 }
 
 // @BasePath /go-bank-transfer
@@ -43,13 +44,17 @@ func NewTransferHandler(router *gin.RouterGroup, transferUs domain.TransferUseca
 func (handler *transferHandler) createTransfer(context *gin.Context) {
 	originAccountId, err := jwt.ExtractAccountOriginId(context)
 	if err != nil {
-		context.AbortWithStatusJSON(http.StatusBadRequest, domain.BuildResponseFromError(err))
+		context.AbortWithStatusJSON(http.StatusBadRequest,
+			domain.BuildResponseFromError(err),
+		)
 		return
 	}
 
 	var body domain.TransferRequest
 	if err := context.BindJSON(&body); err != nil {
-		context.AbortWithStatusJSON(http.StatusBadRequest, domain.BuildResponseFromError(err))
+		context.AbortWithStatusJSON(http.StatusBadRequest,
+			domain.BuildResponseFromError(err),
+		)
 		return
 	}
 
@@ -63,4 +68,36 @@ func (handler *transferHandler) createTransfer(context *gin.Context) {
 	}
 
 	context.SecureJSON(http.StatusCreated, response)
+}
+
+// @BasePath /go-bank-transfer
+// @Summary Get origin account transfers
+// @Description Returns a list of transfers from logged user
+// @Tags Transfers
+// @Router /transfers [get]
+// @Param Authorization header string true "Token"
+// @Accept json
+// @Produce json
+// @Success 201 {object} domain.TransferList
+// @Failure 401 {object} domain.ResponseError
+// @Failure 500 {object} domain.ResponseError
+func (handler *transferHandler) getTransfers(context *gin.Context) {
+	originAccountId, err := jwt.ExtractAccountOriginId(context)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusBadRequest,
+			domain.BuildResponseFromError(err),
+		)
+		return
+	}
+
+	response, err := handler.transferUs.GetAccountOriginTransfers(originAccountId)
+	if err != nil {
+		context.AbortWithStatusJSON(
+			domain.GetErrorStatusCode(err),
+			domain.BuildResponseFromError(err),
+		)
+		return
+	}
+
+	context.SecureJSON(http.StatusOK, response)
 }

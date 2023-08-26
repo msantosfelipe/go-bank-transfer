@@ -121,3 +121,31 @@ func updateAccountBalances(
 
 	return nil
 }
+
+func (r *transferRepository) GetAccountOriginTransfers(
+	accountOriginId uuid.UUID,
+) ([]domain.Transfer, error) {
+	ctx := context.Background()
+	defer ctx.Done()
+
+	queries := queries.New(r.dbClient)
+
+	response, err := queries.GetTransfers(ctx, accountOriginId)
+	if err != nil {
+		logrus.Error("error retrieving transfers - ", err)
+		return nil, err
+	}
+
+	transfers := make([]domain.Transfer, 0)
+	for _, i := range response {
+		transfers = append(transfers, domain.Transfer{
+			Id:                   i.ID.String(),
+			AccountOriginId:      i.AccountDestinationID.String(),
+			AccountDestinationId: i.AccountDestinationID.String(),
+			Amount:               microMoneytoMoney(i.Amount),
+			CreatedAt:            formatDate(i.CreatedAt),
+		})
+	}
+
+	return transfers, nil
+}
