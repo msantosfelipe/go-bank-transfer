@@ -27,9 +27,10 @@ func TestCreateAccount_Success(t *testing.T) {
 	id := uuid.New()
 
 	mockRepo.On("CountAccountByCpf", mock.Anything).Return(0, nil)
-	mockRepo.On("CreateAccount", mock.Anything, mock.Anything, mock.Anything).Return(&domain.AccountCreatorResponse{
-		Id: id.String(),
-	}, nil)
+	mockRepo.On("CreateAccount", mock.Anything, mock.Anything, mock.Anything).
+		Return(&domain.AccountCreatorResponse{
+			Id: id.String(),
+		}, nil)
 
 	request := domain.AccountCreatorRequest{
 		Name:   "James Bond",
