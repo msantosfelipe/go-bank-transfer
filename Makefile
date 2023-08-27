@@ -7,7 +7,7 @@ DB_NAME = bank-transfer
 
 # Run on docker-composer
 run:
-	docker-compose up -d
+	docker-compose up
 
 stop:
 	docker-compose down
