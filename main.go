@@ -9,7 +9,6 @@ package main
 
 import (
 	"context"
-	"log"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/msantosfelipe/go-bank-transfer/app/delivery/http"
@@ -27,7 +26,7 @@ func main() {
 	ctx := context.Background()
 	dbClient, err := pgxpool.Connect(ctx, config.ENV.DbUri)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer dbClient.Close()
 
