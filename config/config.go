@@ -17,7 +17,11 @@ import (
 type Environment struct {
 	ApiPort            string `env:"API_PORT"`
 	ApiBasePath        string `env:"API_BASE_PATH"`
-	DbUri              string `env:"DB_URI"`
+	DbUser             string `env:"DB_USER"`
+	DbPass             string `env:"DB_PASS"`
+	DbHost             string `env:"DB_HOST"`
+	DbPort             string `env:"DB_PORT"`
+	DbName             string `env:"DB_NAME"`
 	JwtTokenSecret     string `env:"JWT_TOKEN_SECRET"`
 	JwtTokenExpMinutes int    `env:"JWT_TOKEN_EXP_MINUTES"`
 }

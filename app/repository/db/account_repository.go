@@ -128,7 +128,7 @@ func (r *accountRepository) GetAccountBalance(accountId uuid.UUID) (float64, err
 		return 0, domain.ErrAccountNotFound
 	}
 
-	if len(accountBalances) >= 1 {
+	if len(accountBalances) > 1 {
 		logrus.Error("account balance returned more than one account")
 		return 0, errors.New("error retrieving account balance")
 	}

@@ -1,3 +1,4 @@
+# builder
 FROM golang:1.21.0-alpine as builder
 
 ENV GOPATH="$HOME/go"
@@ -10,7 +11,8 @@ RUN go build -o go-bank-transfer
 
 RUN go test ./app/...
 
-FROM alpine:latest
+# run
+FROM alpine:3.18.3
 
 ENV GOPATH="$HOME/go"
 

@@ -1,6 +1,6 @@
 version: '3'
 services:
-  go-bank-transfer:
+  bank-transfer:
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,11 +12,11 @@ services:
       - mynetwork
 
   postgres:
-    image: postgres:14.2
+    image: postgres:15.4
     environment:
-      POSTGRES_USER: master
-      POSTGRES_PASSWORD: greenbeans
-      POSTGRES_DB: bank-transfer
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
@@ -34,7 +34,7 @@ services:
         "-path",
         "/migrations",
         "-database",
-        "postgres://master:greenbeans@postgres:5432/bank-transfer?sslmode=disable",
+        "postgres://${DB_USER}:${DB_PASS}@postgres:5432/${DB_NAME}?sslmode=disable",
       ]
     command: ["up"]
     depends_on:
@@ -48,4 +48,3 @@ volumes:
 
 networks:
   mynetwork:
-

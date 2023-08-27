@@ -9,6 +9,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/msantosfelipe/go-bank-transfer/app/delivery/http"
@@ -24,7 +25,7 @@ func main() {
 
 	// init db
 	ctx := context.Background()
-	dbClient, err := pgxpool.Connect(ctx, config.ENV.DbUri)
+	dbClient, err := pgxpool.Connect(ctx, getDbUri())
 	if err != nil {
 		panic(err)
 	}
@@ -47,4 +48,15 @@ func configureLog() {
 	logrus.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
+}
+
+func getDbUri() string {
+	return fmt.Sprintf(
+		"postgres://%s:%s@%s:%v/%s?sslmode=disable",
+		config.ENV.DbUser,
+		config.ENV.DbPass,
+		config.ENV.DbHost,
+		config.ENV.DbPort,
+		config.ENV.DbName,
+	)
 }
