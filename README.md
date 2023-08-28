@@ -24,19 +24,27 @@ API for bank transfers from a digital bank
 
 # How to run
 ## Run go-bank-transfer with docker-compose
-- To start just run: `make run` or `docker-compose up`
+- Clone project 
+    - `git clone git@github.com:msantosfelipe/go-bank-transfer.git`
+- To start just run
+    - `make run` or `docker-compose up`
     - Usage:
         - See 'Examples' tag bellow in this file
         - Download file `Go Bank Transfer.postman_collection.json` and import on Postman
         - Access documentation (Swagger) - http://localhost:8080/go-bank-transfer/swagger/index.html
-- Stop: `make stop` or `docker-compose-down`
-- Clean all data: `make clean-docker` - remove docker images and db volume
+- Stop
+    - `make stop` or `docker-compose-down`
+- Clean all data - remove docker images and db volume
+    - `make clean-docker`
 
 #### Run in local development (db container and local go app)
+- Clone project 
+    - `git clone git@github.com:msantosfelipe/go-bank-transfer.git`
 - Run app:
     - `make init-dev-db`
     - `go run .`
-- Run tests: `make tests`
+- Run tests
+    - `make tests`
 
 ## Features
 - Accounts:
