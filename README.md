@@ -25,7 +25,10 @@ API for bank transfers from a digital bank
 # How to run
 ## Run go-bank-transfer with Docker
 - To start just run: `make run` or `docker-compose up`
-    - See Examples bellow or access documentation (Swagger) - http://localhost:8080/go-bank-transfer/swagger/index.html
+    - Usage:
+        - See 'Examples' tag bellow in this file
+        - Download file `Go Bank Transfer.postman_collection.json` and import on Postman
+        - Access documentation (Swagger) - http://localhost:8080/go-bank-transfer/swagger/index.html
 - Stop: `make stop` or `docker-compose-down`
 - Clean all data: `make clean-docker` - remove docker images and db volume
 
@@ -40,6 +43,8 @@ API for bank transfers from a digital bank
     - Get list of accounts
     - Get account balance
     - Create an account
+        - Password must have between 6 and 16 characteres
+        - Accounts are created with a default balance value of 5123.56
 - Login:
     - Authenticate a user
         - The default logins/secrets are:
