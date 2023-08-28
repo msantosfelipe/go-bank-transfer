@@ -23,6 +23,8 @@ var (
 	ErrBadParamInput = errors.New("given param is not valid")
 	// ErrAccountConflict will throw if the user tries to log in with an invalid login or password
 	ErrInvalidLogin = errors.New("login or password is not valid")
+	// ErrInvalidPasswordLength will throw if the user pass a too short or too long password
+	ErrInvalidPasswordLength = errors.New("the password must have between 6 and 16 characteres")
 	// ErrAccountConflict will throw if the search query returns will no results
 	ErrNoRowsInResultSet = errors.New("no rows in result set")
 	// ErrUserNotAuthorized will throw if the uses tries to access a protected resource with an invalid token

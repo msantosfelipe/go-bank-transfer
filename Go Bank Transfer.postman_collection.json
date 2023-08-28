@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "b733cb6e-73c6-4247-a76d-643a806d9db0",
+		"name": "Go Bank Transfer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3806959"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"User 0\",\n    \"cpf\" : \"77788899900\",\n    \"secret\" : \"TestePass\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"cpf\" : \"87832842067\",\n    \"secret\" : \"LetsGo321@\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/accounts/d0537a0e-16c3-474a-a8d7-7a5fc6a1c79c/balance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"accounts",
+						"d0537a0e-16c3-474a-a8d7-7a5fc6a1c79c",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transfers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X29yaWdpbl9pZCI6ImQwNTM3YTBlLTE2YzMtNDc0YS1hOGQ3LTdhNWZjNmExYzc5YyIsImV4cCI6MTY5MzE1NzkwNn0.NygThhB0G5jhjoRjn4yV3r_DmQfHakpxF6x4f_dxVZ0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/transfers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transfer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X29yaWdpbl9pZCI6ImQwNTM3YTBlLTE2YzMtNDc0YS1hOGQ3LTdhNWZjNmExYzc5YyIsImV4cCI6MTY5MzE1NzkwNn0.NygThhB0G5jhjoRjn4yV3r_DmQfHakpxF6x4f_dxVZ0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account_destination_id\" : \"7a95de4b-0936-437f-b48e-9e898f4c99af\",\n    \"amount\" : 100.1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/go-bank-transfer/transfers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"go-bank-transfer",
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

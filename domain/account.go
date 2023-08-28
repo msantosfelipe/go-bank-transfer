@@ -11,7 +11,10 @@ import (
 	"github.com/google/uuid"
 )
 
-const DefaultBalance = 0
+const (
+	MinSecretLength = 6
+	MaxSecretLength = 16
+)
 
 // Account content struct deifinition
 type Account struct {

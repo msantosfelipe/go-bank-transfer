@@ -10,11 +10,10 @@ package main
 import (
 	"context"
 
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/msantosfelipe/go-bank-transfer/app/delivery/http"
-	"github.com/msantosfelipe/go-bank-transfer/app/repository/db"
+	repository "github.com/msantosfelipe/go-bank-transfer/app/repository/db"
 	"github.com/msantosfelipe/go-bank-transfer/app/usecase"
-	"github.com/msantosfelipe/go-bank-transfer/config"
+	"github.com/msantosfelipe/go-bank-transfer/infrastructure/db"
 	"github.com/sirupsen/logrus"
 )
 
@@ -24,18 +23,16 @@ func main() {
 
 	// init db
 	ctx := context.Background()
-	dbClient, err := pgxpool.Connect(ctx, config.ENV.DbUri)
-	if err != nil {
-		panic(err)
-	}
+	dbClient := db.InitDb(ctx)
 	defer dbClient.Close()
+	defer ctx.Done()
 
 	// init dependencies
-	accountRepo := db.NewAccountRepository(dbClient)
+	accountRepo := repository.NewAccountRepository(dbClient)
 	accountUs := usecase.NewAccountUsecase(accountRepo)
-	loginRepo := db.NewLoginRepository(dbClient)
+	loginRepo := repository.NewLoginRepository(dbClient)
 	loginUs := usecase.NewLoginUsecase(loginRepo)
-	transferRepo := db.NewTransferRepository(dbClient)
+	transferRepo := repository.NewTransferRepository(dbClient)
 	transferUs := usecase.NewTransferUsecase(transferRepo)
 
 	// init routers
