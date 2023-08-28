@@ -8,6 +8,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +45,18 @@ func NewAccountHandler(router *gin.RouterGroup, accountUs domain.AccountUsecase)
 func (handler *accountHandler) createAccount(context *gin.Context) {
 	var body domain.AccountCreatorRequest
 	if err := context.BindJSON(&body); err != nil {
-		context.AbortWithStatusJSON(http.StatusBadRequest, domain.BuildResponseFromError(err))
+		context.AbortWithStatusJSON(http.StatusBadRequest,
+			domain.BuildResponseFromError(err),
+		)
+		return
+	}
+
+	fmt.Println(len(body.Secret))
+	if len(body.Secret) < domain.MinSecretLength ||
+		len(body.Secret) > domain.MaxSecretLength {
+		context.AbortWithStatusJSON(http.StatusBadRequest,
+			domain.BuildResponseFromError(domain.ErrInvalidPasswordLength),
+		)
 		return
 	}
 
