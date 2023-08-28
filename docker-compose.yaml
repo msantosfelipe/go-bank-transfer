@@ -1,16 +1,5 @@
 version: '3'
 services:
-  bank-transfer:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    networks:
-      - mynetwork
-
   postgres:
     image: postgres:15.4
     environment:
@@ -40,6 +29,17 @@ services:
     depends_on:
       - postgres
     restart: on-failure
+    networks:
+      - mynetwork
+
+  bank-transfer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - migrate
     networks:
       - mynetwork
 

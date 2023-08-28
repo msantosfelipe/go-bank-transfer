@@ -20,7 +20,8 @@ type Environment struct {
 	DbUser             string `env:"DB_USER"`
 	DbPass             string `env:"DB_PASS"`
 	DbHost             string `env:"DB_HOST"`
-	DbPort             string `env:"DB_PORT"`
+	DbHostLocal        string `env:"DB_HOST_LOCAL"`
+	DbPort             int    `env:"DB_PORT"`
 	DbName             string `env:"DB_NAME"`
 	JwtTokenSecret     string `env:"JWT_TOKEN_SECRET"`
 	JwtTokenExpMinutes int    `env:"JWT_TOKEN_EXP_MINUTES"`

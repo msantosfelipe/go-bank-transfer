@@ -8,7 +8,7 @@ API for bank transfers from a digital bank
 - Make - run Makefile commands
 - Golang 1.21 - run app locally
 
-## Dependencies
+## Go project dependencies
 - Web: `gin`
 - Database - Postgres driver: `pgx`
 - Log: `logrus`
@@ -16,23 +16,23 @@ API for bank transfers from a digital bank
 - Env variables: `go-env` and `gotenv`
 - More on `go.mod`
 
-#### Development dependencies
+#### Local development dependencies
 - Postgres
 - Migrate (https://github.com/golang-migrate/migrate) - if you want to run migrations in database - Run `make db-migrate`
 - SQLC (https://sqlc.dev/) - if you want to convert sql queries into golang code - Run `make db-queries`
 - Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files Run `make swagger`
 
 # How to run
-#### Run app with Docker
-- Start: `make run` or `docker-compose up`
+## Run go-bank-transfer with Docker
+- To start just run: `make run` or `docker-compose up`
+    - See Examples bellow or access documentation (Swagger) - http://localhost:8080/go-bank-transfer/swagger/index.html
 - Stop: `make stop` or `docker-compose-down`
 - Clean all data: `make clean-docker` - remove docker images and db volume
 
-#### Development
+#### Run in local development
 - Run app:
     - `make init-dev-db`
     - `go run .`
-- Documentation (Swagger) - http://localhost:8081/go-bank-transfer/swagger/index.html
 - Run tests: `make tests`
 
 ## Features

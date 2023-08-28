@@ -1,6 +1,11 @@
 include .env
 
-.PHONY: run stop docker-build docker-run remove-volume tests swagger db-up db-down db-create db-drop db-migrate
+LOCAL_DB_CONTAINER_NAME=bank-transfer-postgres
+GO_BANK_TRANSFER_IMAGE=go-bank-transfer_bank-transfer:latest
+POSTGRES_IMAGE=postgres:15.4
+MIGRATE_IMAGE=migrate/migrate:v4.15.2
+
+.PHONY: run stop docker-build docker-run clean-docker rm-all-images rm-volume tests swagger db-up db-down db-create db-drop db-migrate
 
 # Run on docker-compose
 run:
@@ -10,12 +15,12 @@ stop:
 	docker-compose down
 
 ## Delete all docker data
-clean-docker: stop remove-all-images remove-volume
+clean-docker: stop rm-all-images rm-volume
 
-remove-all-images:
-	docker rmi go-bank-transfer_bank-transfer:latest && docker rmi postgres:14.2 && docker rmi migrate/migrate:v4.15.2
+rm-all-images:
+	docker rmi $(GO_BANK_TRANSFER_IMAGE) && docker rmi $(POSTGRES_IMAGE) && docker rmi $(MIGRATE_IMAGE)
 
-remove-volume:
+rm-volume:
 	docker volume rm go-bank-transfer_postgres-data
 
 # Development:
@@ -36,17 +41,20 @@ docker-run:
 init-dev-db: db-up db-create db-migrate
 
 db-up:
-	docker run -d --rm --name $(DB_DOCKER_CONTAINER_NAME) -p5432:5432 -v $(CURDIR)/db/data:/var/lib/postgresql/data -e POSTGRES_USER=$(DB_USER) -e POSTGRES_PASSWORD=$(DB_PASS) postgres:15.4
-	sleep 1
+	docker run -d --rm --name $(LOCAL_DB_CONTAINER_NAME) -p5432:5432 -v $(CURDIR)/db/data:/var/lib/postgresql/data -e POSTGRES_USER=$(DB_USER) -e POSTGRES_PASSWORD=$(DB_PASS) $(POSTGRES_IMAGE)
+	sleep 2
 
 db-down:
-	docker stop $(DB_DOCKER_CONTAINER_NAME)
+	docker stop $(LOCAL_DB_CONTAINER_NAME)
+
+db-delete-volume:
+	sudo rm -rf $(CURDIR)/db/data
 
 db-create:
-	docker exec -it $(DB_DOCKER_CONTAINER_NAME) createdb --username=master --owner=master $(DB_NAME)
+	docker exec -it $(LOCAL_DB_CONTAINER_NAME) createdb --username=$(DB_USER) --owner=$(DB_USER) $(DB_NAME)
 
 db-drop:
-	docker exec -it $(DB_DOCKER_CONTAINER_NAME) dropdb --username=master $(DB_NAME)
+	docker exec -it $(LOCAL_DB_CONTAINER_NAME) dropdb --username=$(DB_USER) $(DB_NAME)
 
 ## 'Migrate' required, see README - run migration over db to apply new changes
 db-migrate:
