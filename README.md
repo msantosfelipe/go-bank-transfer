@@ -23,7 +23,7 @@ API for bank transfers from a digital bank
 - Swagger (https://github.com/swaggo/gin-swagger) - if you want to update swagger files Run `make swagger`
 
 # How to run
-## Run go-bank-transfer with Docker
+## Run go-bank-transfer with docker-compose
 - To start just run: `make run` or `docker-compose up`
     - Usage:
         - See 'Examples' tag bellow in this file
@@ -32,7 +32,7 @@ API for bank transfers from a digital bank
 - Stop: `make stop` or `docker-compose-down`
 - Clean all data: `make clean-docker` - remove docker images and db volume
 
-#### Run in local development
+#### Run in local development (db container and local go app)
 - Run app:
     - `make init-dev-db`
     - `go run .`
@@ -47,7 +47,7 @@ API for bank transfers from a digital bank
         - Accounts are created with a default balance value of 5123.56
 - Login:
     - Authenticate a user
-        - The default logins/secrets are:
+        - There app is started with a default login/secret created:
             - `87832842067` / `LetsGo321@`
 - Transfer:
     - Get authenticated user transfers
@@ -71,7 +71,7 @@ go-bank-transfer/
 |       ├── ...         # App logic methods
 ├── config/
 |   |── ...             # Environment variables config
-├── app/
+├── db/
 |   ├── migrations/
 |       ├── ...         # Dabase migration files
 |   ├── queries/
